@@ -27,7 +27,8 @@ def main():
     # status = 'To Do'  # To Do
     # status = 'In Progress'  # 進行中
     # issues = jira.search_issues(f'project = {PROJ} and status = "{status}"')
-    issues = jira.search_issues(f'project = {PROJ} and status != "Done"')
+    issues = jira.search_issues(f'project = {PROJ} and status != "Done" ' \
+                                'order by key')
 
     for issue in issues:
         print('key:', issue.key)
