@@ -1,0 +1,4 @@
+<TOKEN> # API token
+<URL>   # for example, https://xxx.atlassian.net
+<EMAIL>
+<PROJECT NAME>
