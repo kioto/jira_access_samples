@@ -1,6 +1,7 @@
 """jiratools
 """
 import re
+import datetime
 import dataclasses
 
 
@@ -23,7 +24,7 @@ class Env:
 
     @staticmethod
     def get_param(line):
-        return re.sub('^[a-zA-Z]+: ', '', line.rstrip())
+        return re.sub('^[a-zA-Z_]+: ', '', line.rstrip())
 
     @staticmethod
     def open(envfile=DEFAULT_ENV_FILE):
@@ -59,6 +60,28 @@ class Env:
         EnvData = Env(https_proxy, http_proxy, token, email, url, project,
                       start_field, due_field)
         return EnvData
+
+
+# issue utilities
+
+def get_start_date(issue):
+    start_date = None
+    if hasattr(issue.fields, EnvData.start_field):
+        date_str = getattr(issue.fields, EnvData.start_field)
+        if date_str:
+            start_date = datetime.date.fromisoformat(date_str)
+
+    return start_date
+
+
+def get_due_date(issue):
+    due_date = None
+    if hasattr(issue.fields, EnvData.due_field):
+        date_str = getattr(issue.fields, EnvData.due_field)
+        if date_str:
+            due_date = datetime.date.fromisoformat(date_str)
+
+    return due_date
 
 
 if __name__ == '__main__':
