@@ -6,29 +6,20 @@ $ python exec_jquery.py 'status!="Done" and issuetype="エピック" order by ke
 """
 import sys
 from jira import JIRA
+import jiratools as jt
+
 
 ENV_FILE = 'env.txt'
 
-TOKEN = ''  # あらかじめ発行したトークン
-URL = ''    # https://xxxx.atlassian.net
-EMAIL = ''  # トークンを発行したユーザのメールアドレス
-PROJ = ''   # プロジェクト名
-with open(ENV_FILE, 'r') as f:
-    [TOKEN, URL, EMAIL, PROJ] = [param.rstrip() for param in f.readlines()]
 
-if '' in [TOKEN, URL, EMAIL, PROJ]:
-    # １つでも空文字が残っていればエラー
-    print('ERROR: env.txt')
-    exit()
-
-
-Jira = JIRA({'server': URL}, basic_auth=(EMAIL, TOKEN))
+Env = jt.Env.open(ENV_FILE)
+Jira = JIRA({'server': Env.url}, basic_auth=(Env.email, Env.token))
 
 
 def get_children_issues(parent_issue):
     """子チケットの取得
     """
-    query = f'project={PROJ} and parent={parent_issue.id} order by key'
+    query = f'project={Env.project} and parent={parent_issue.id} order by key'
     children = Jira.search_issues(query)
     if children is None:
         children = []
@@ -56,7 +47,7 @@ def print_children(issue, level=1):
 
 
 def main(query):
-    issues = Jira.search_issues(f'project={PROJ} and ' + query)
+    issues = Jira.search_issues(f'project={Env.project} and ' + query)
 
     for issue in issues:
         # チケット情報
