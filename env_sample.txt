@@ -1,4 +1,8 @@
-<TOKEN> # API token
-<URL>   # for example, https://xxx.atlassian.net
-<EMAIL>
-<PROJECT NAME>
+http_proxy:
+https_proxy:
+token: <TOKEN_STRING>
+email: <USER_EMAIL>
+url: https://XXX.atlassian.net
+project: <PROJECT>
+start_field: <START_DATE_FILELD_NAME>
+due_field: <DUE_DATE_FILED_NAME>
